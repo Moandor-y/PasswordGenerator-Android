@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin_horizontal"
+    android:paddingRight="@dimen/margin_horizontal"
+    android:paddingTop="@dimen/margin_vertical"
+    android:paddingBottom="@dimen/margin_vertical">
+
+    <TextView
+        android:id="@+id/salt_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/salt"
+        android:labelFor="@id/salt"/>
+
+    <EditText
+        android:id="@+id/salt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/salt_label"
+        android:inputType="text"/>
+
+</RelativeLayout>
