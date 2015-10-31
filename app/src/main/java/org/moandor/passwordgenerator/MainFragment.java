@@ -1,21 +1,37 @@
 package org.moandor.passwordgenerator;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
  * Created by Moandor on 10/31/2015.
  */
 public class MainFragment extends Fragment {
+    private static final String TAG_SALT_DIALOG = "salt_dialog";
+
     private TextView mPasswordView;
+    private byte[] mSaltBytes = new byte[GlobalContext.SALT_BYTE_COUNT];
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -41,5 +57,54 @@ public class MainFragment extends Fragment {
                 }
             }
         });
+        EditText domainNameEditText = (EditText) view.findViewById(R.id.domain_name);
+        domainNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateHash();
+            }
+        });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.activity_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.salt_settings: {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                Fragment prev = getFragmentManager().findFragmentByTag(TAG_SALT_DIALOG);
+                if (prev != null) {
+                    transaction.remove(prev);
+                }
+                transaction.commit();
+                SaltDialogFragment dialogFragment = new SaltDialogFragment();
+                dialogFragment.setFinishListener(new SaltDialogFragment.OnFinishListener() {
+                    @Override
+                    public void onFinish(@Nullable byte[] salt) {
+                        //TODO
+                    }
+                });
+                dialogFragment.show(getFragmentManager(), TAG_SALT_DIALOG);
+                return true;
+            }
+            default: {
+                return super.onOptionsItemSelected(item);
+            }
+        }
+    }
+
+    private void updateHash() {
+        //TODO
     }
 }
