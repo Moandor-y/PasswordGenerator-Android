@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/margin_horizontal"
+    android:paddingRight="@dimen/margin_horizontal"
+    android:paddingTop="@dimen/margin_vertical"
+    android:paddingBottom="@dimen/margin_vertical">
+
+    <TextView
+        android:id="@+id/domain_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/domain_name"
+        android:labelFor="@+id/domain_name"/>
+
+    <EditText
+        android:id="@id/domain_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/domain_name_label"
+        android:layout_marginTop="@dimen/margin_vertical"
+        android:inputType="textUri"/>
+
+    <TextView
+        android:id="@+id/password_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/domain_name"
+        android:layout_marginTop="@dimen/margin_vertical"
+        android:text="@string/password"/>
+
+    <TextView
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password_label"
+        android:layout_marginTop="@dimen/margin_vertical"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:gravity="center_horizontal"
+        android:textIsSelectable="true"/>
+
+    <CheckBox
+        android:id="@+id/show_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/password"
+        android:layout_marginTop="@dimen/margin_vertical"
+        android:text="@string/show_password"/>
+
+</RelativeLayout>
