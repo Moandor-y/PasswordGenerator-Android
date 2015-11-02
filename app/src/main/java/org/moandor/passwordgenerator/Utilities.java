@@ -1,5 +1,6 @@
 package org.moandor.passwordgenerator;
 
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 /**
@@ -16,5 +17,10 @@ public class Utilities {
                     + Character.digit(hex.charAt(i + 1), 16));
         }
         return data;
+    }
+
+    @SafeVarargs
+    public static <Params> void executeAsyncTask(AsyncTask<Params, ?, ?> task, Params... params) {
+        task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, params);
     }
 }

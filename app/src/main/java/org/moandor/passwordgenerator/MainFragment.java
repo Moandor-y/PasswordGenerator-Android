@@ -92,7 +92,8 @@ public class MainFragment extends Fragment {
                 dialogFragment.setFinishListener(new SaltDialogFragment.OnFinishListener() {
                     @Override
                     public void onFinish(@Nullable byte[] salt) {
-                        //TODO
+                        mSaltBytes = salt;
+                        updateHash();
                     }
                 });
                 dialogFragment.show(getFragmentManager(), TAG_SALT_DIALOG);
