@@ -5,23 +5,39 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.EditText;
 
 /**
  * Created by Moandor on 10/30/2015.
  */
 public class SaltDialogFragment extends DialogFragment {
+    @Nullable
     private OnFinishListener mListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(View.inflate(getActivity(), R.layout.dialog_salt, null));
+        View view = View.inflate(getActivity(), R.layout.dialog_salt, null);
+        final EditText saltEditText = (EditText) view.findViewById(R.id.salt);
+        builder.setView(view);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //TODO
+                String saltHex = saltEditText.getText().toString();
+                if (mListener != null) {
+                    byte[] dest = new byte[GlobalContext.SALT_BYTE_COUNT];
+                    byte[] source = Utilities.hexToBytes(saltHex);
+                    System.arraycopy(
+                            source,
+                            0,
+                            dest,
+                            0,
+                            Math.min(GlobalContext.SALT_BYTE_COUNT, source.length));
+                    mListener.onFinish(dest);
+                }
             }
         });
         builder.setNegativeButton(R.string.cancel, null);
@@ -33,6 +49,6 @@ public class SaltDialogFragment extends DialogFragment {
     }
 
     public interface OnFinishListener {
-        void onFinish(@Nullable byte[] salt);
+        void onFinish(@NonNull byte[] salt);
     }
 }

@@ -1,6 +1,7 @@
 package org.moandor.passwordgenerator;
 
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,7 +10,10 @@ import java.io.IOException;
  * Created by Moandor on 11/2/2015.
  */
 public class ReadSaltTask extends AsyncTask<Void, Void, byte[]> {
+    @Nullable
     private OnFinishListener mListener;
+    @Nullable
+    private Exception mException;
 
     @Override
     protected byte[] doInBackground(Void... params) {
@@ -20,6 +24,7 @@ public class ReadSaltTask extends AsyncTask<Void, Void, byte[]> {
                 cancel(true);
             }
         } catch (IOException e) {
+            mException = e;
             cancel(true);
         }
         return data;
@@ -29,7 +34,7 @@ public class ReadSaltTask extends AsyncTask<Void, Void, byte[]> {
     protected void onPostExecute(byte[] result) {
         super.onPostExecute(result);
         if (mListener != null) {
-            mListener.onFinish(true, result);
+            mListener.onFinish(true, result, null);
         }
     }
 
@@ -37,7 +42,7 @@ public class ReadSaltTask extends AsyncTask<Void, Void, byte[]> {
     protected void onCancelled(byte[] result) {
         super.onCancelled(result);
         if (mListener != null) {
-            mListener.onFinish(false, result);
+            mListener.onFinish(false, result, mException);
         }
     }
 
@@ -46,6 +51,6 @@ public class ReadSaltTask extends AsyncTask<Void, Void, byte[]> {
     }
 
     public interface OnFinishListener {
-        void onFinish(boolean succeeded, byte[] salt);
+        void onFinish(boolean succeeded, byte[] salt, @Nullable Exception exception);
     }
 }

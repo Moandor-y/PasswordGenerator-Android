@@ -2,6 +2,10 @@ package org.moandor.passwordgenerator;
 
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 /**
  * Created by Moandor on 10/31/2015.
@@ -22,5 +26,20 @@ public class Utilities {
     @SafeVarargs
     public static <Params> void executeAsyncTask(AsyncTask<Params, ?, ?> task, Params... params) {
         task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, params);
+    }
+
+    public static void setEnabledForAllViews(@NonNull View view, boolean enabled) {
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                setEnabledForAllViews(group.getChildAt(i), enabled);
+            }
+        } else {
+            view.setEnabled(enabled);
+        }
+    }
+
+    public static void showToast(@StringRes int stringRes) {
+        Toast.makeText(GlobalContext.getInstance(), stringRes, Toast.LENGTH_SHORT).show();
     }
 }

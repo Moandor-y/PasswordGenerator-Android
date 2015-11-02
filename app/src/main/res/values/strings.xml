@@ -6,4 +6,6 @@
     <string name="domain_name">Domain name</string>
     <string name="password">Password</string>
     <string name="show_password">Show password</string>
+    <string name="read_file_failure">Failed to read salt file</string>
+    <string name="write_file_failure">Failed to write salt file</string>
 </resources>
