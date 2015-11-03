@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.Formatter;
+
 /**
  * Created by Moandor on 10/31/2015.
  */
@@ -21,6 +23,14 @@ public class Utilities {
                     + Character.digit(hex.charAt(i + 1), 16));
         }
         return data;
+    }
+
+    public static String bytesToHex(@NonNull byte[] bytes) {
+        Formatter formatter = new Formatter();
+        for (byte b : bytes) {
+            formatter.format("%02X", b);
+        }
+        return formatter.toString();
     }
 
     @SafeVarargs

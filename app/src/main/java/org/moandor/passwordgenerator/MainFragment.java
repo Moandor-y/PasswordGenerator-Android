@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by Moandor on 10/31/2015.
@@ -28,6 +32,7 @@ public class MainFragment extends Fragment {
     private static final String TAG_SALT_DIALOG = "salt_dialog";
 
     private TextView mPasswordView;
+    private EditText mDomainNameEditText;
     @NonNull private byte[] mSaltBytes = new byte[GlobalContext.SALT_BYTE_COUNT];
 
     @Override
@@ -60,8 +65,8 @@ public class MainFragment extends Fragment {
                         }
                     }
                 });
-        EditText domainNameEditText = (EditText) view.findViewById(R.id.domain_name);
-        domainNameEditText.addTextChangedListener(new TextWatcher() {
+        mDomainNameEditText = (EditText) view.findViewById(R.id.domain_name);
+        mDomainNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -148,6 +153,16 @@ public class MainFragment extends Fragment {
     }
 
     private void updateHash() {
-        //TODO
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-1");
+            String domainName = mDomainNameEditText.getText().toString();
+            digest.update(domainName.getBytes(Charset.forName("UTF-8")));
+            digest.update(mSaltBytes);
+            byte[] hash = digest.digest();
+            String base64 = Base64.encodeToString(hash, Base64.DEFAULT);
+            mPasswordView.setText(base64.substring(0, 14));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

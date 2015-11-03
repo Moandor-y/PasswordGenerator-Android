@@ -20,7 +20,7 @@ public class SaltDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = View.inflate(getActivity(), R.layout.dialog_salt, null);
+        final View view = View.inflate(getActivity(), R.layout.dialog_salt, null);
         final EditText saltEditText = (EditText) view.findViewById(R.id.salt);
         builder.setView(view);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -41,6 +41,18 @@ public class SaltDialogFragment extends DialogFragment {
             }
         });
         builder.setNegativeButton(R.string.cancel, null);
+        Utilities.setEnabledForAllViews(view, false);
+        ReadSaltTask task = new ReadSaltTask();
+        task.setOnFinishListener(new ReadSaltTask.OnFinishListener() {
+            @Override
+            public void onFinish(boolean succeeded, byte[] salt, @Nullable Exception exception) {
+                Utilities.setEnabledForAllViews(view, true);
+                if (succeeded) {
+                    saltEditText.setText(Utilities.bytesToHex(salt));
+                }
+            }
+        });
+        Utilities.executeAsyncTask(task);
         return builder.create();
     }
 
