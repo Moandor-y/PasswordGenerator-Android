@@ -88,10 +88,7 @@ public class MainFragment extends Fragment {
         copyToClipboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardManager manager = (ClipboardManager)
-                        getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData data = ClipData.newPlainText("Password", mPasswordView.getText());
-                manager.setPrimaryClip(data);
+                copyToClipboard();
             }
         });
 
@@ -119,7 +116,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.activity_main, menu);
+        inflater.inflate(R.menu.fragment_main, menu);
     }
 
     @Override
@@ -127,6 +124,10 @@ public class MainFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.salt_settings: {
                 launchSaltDialog();
+                return true;
+            }
+            case R.id.copy: {
+                copyToClipboard();
                 return true;
             }
             default: {
@@ -181,5 +182,13 @@ public class MainFragment extends Fragment {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void copyToClipboard() {
+        ClipboardManager manager = (ClipboardManager)
+                getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData data = ClipData.newPlainText("Password", mPasswordView.getText());
+        manager.setPrimaryClip(data);
+        Utilities.showToast(R.string.copied_to_clipboard);
     }
 }
