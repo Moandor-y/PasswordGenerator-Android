@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/domain_name_label"
-        android:layout_marginTop="@dimen/margin_vertical"
         android:inputType="textUri"/>
 
     <TextView
@@ -36,7 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/password_label"
-        android:layout_marginTop="@dimen/margin_vertical"
         android:textAppearance="?android:textAppearanceLarge"
         android:gravity="center_horizontal"
         android:textIsSelectable="true"/>
@@ -47,7 +45,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/password"
-        android:layout_marginTop="@dimen/margin_vertical"
         android:text="@string/show_password"/>
+
+    <Button
+        android:id="@+id/copy_to_clipboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/show_password"
+        android:text="@string/copy"/>
 
 </RelativeLayout>

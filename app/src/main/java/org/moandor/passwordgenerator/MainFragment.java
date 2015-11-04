@@ -2,6 +2,9 @@ package org.moandor.passwordgenerator;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -68,14 +72,26 @@ public class MainFragment extends Fragment {
         mDomainNameEditText = (EditText) view.findViewById(R.id.domain_name);
         mDomainNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
                 updateHash();
+            }
+        });
+        Button copyToClipboardButton = (Button) view.findViewById(R.id.copy_to_clipboard);
+        copyToClipboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager manager = (ClipboardManager)
+                        getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData data = ClipData.newPlainText("Password", mPasswordView.getText());
+                manager.setPrimaryClip(data);
             }
         });
 
@@ -94,6 +110,7 @@ public class MainFragment extends Fragment {
                         Utilities.showToast(R.string.read_file_failure);
                     }
                 }
+                updateHash();
             }
         });
         Utilities.executeAsyncTask(task);
