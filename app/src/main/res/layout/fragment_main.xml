@@ -37,7 +37,8 @@
         android:layout_below="@id/password_label"
         android:textAppearance="?android:textAppearanceLarge"
         android:gravity="center_horizontal"
-        android:textIsSelectable="true"/>
+        android:textIsSelectable="true"
+        android:fontFamily="monospace"/>
 
     <CheckBox
         android:id="@+id/show_password"
