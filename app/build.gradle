@@ -8,8 +8,8 @@ android {
         applicationId "org.moandor.passwordgenerator"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0.0.17"
+        versionCode 24
+        versionName "1.0.1.24"
     }
     buildTypes {
         release {
